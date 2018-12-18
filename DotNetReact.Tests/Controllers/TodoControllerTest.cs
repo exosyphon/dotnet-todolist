@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using DotNetReact.Controllers;
 using DotNetReact.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace DotNetReact.Tests.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class TodoControllerTest
     {
 
@@ -15,7 +16,7 @@ namespace DotNetReact.Tests.Controllers
         private DbContextOptionsBuilder<TodoContext> builder;
         private TodoContext context;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             builder = new DbContextOptionsBuilder<TodoContext>();
@@ -35,7 +36,7 @@ namespace DotNetReact.Tests.Controllers
             controller = new TodoController(context);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TearDown()
         {
             context.RemoveRange(context.TodoItems);
@@ -43,7 +44,7 @@ namespace DotNetReact.Tests.Controllers
         }
 
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnAllTodoItems()
         {
             var expected = new List<TodoItem>(new TodoItem[] {
@@ -54,7 +55,7 @@ namespace DotNetReact.Tests.Controllers
             CollectionAssert.AreEquivalent(expected, controller.GetAll().Value);
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldReturnSpecificTodoItem()
         {
             Assert.AreEqual(new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false }, controller.GetById(1L).Value);
