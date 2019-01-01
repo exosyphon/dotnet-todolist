@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using DotNetReact.Models;
+using DotNetReact.Services;
 
 namespace DotNetReact.Controllers
 {
@@ -9,23 +10,23 @@ namespace DotNetReact.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly ITodoItemService _service;
 
-        public TodoController(TodoContext context)
+        public TodoController(ITodoItemService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public ActionResult<List<TodoItem>> GetAll()
         {
-            return _context.TodoItems.ToList();
+            return _service.GetTodoItems();
         }
 
         [HttpGet("{id}", Name = "GetTodo")]
         public ActionResult<TodoItem> GetById(long id)
         {
-            var item = _context.TodoItems.Find(id);
+            var item = _service.GetTodoItem(id);
             if (item == null)
             {
                 return NotFound();

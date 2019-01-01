@@ -4,6 +4,8 @@ using DotNetReact.Models;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using Moq;
+using DotNetReact.Services;
 
 namespace DotNetReact.Tests.Controllers
 {
@@ -13,36 +15,19 @@ namespace DotNetReact.Tests.Controllers
 
         private TodoController controller;
 
-        private DbContextOptionsBuilder<TodoContext> builder;
-        private TodoContext context;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Initialize()
         {
-            builder = new DbContextOptionsBuilder<TodoContext>();
-            builder.UseInMemoryDatabase("MyInMemoryDb");
-            var options = builder.Options;
-
-            context = new TodoContext(options);
-            var todos = new List<TodoItem>
-                {
-                    new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false},
+            var mockService = new Mock<ITodoItemService>(MockBehavior.Strict);
+            mockService.Setup(p => p.GetTodoItems()).Returns(new List<TodoItem>(new TodoItem[] {
+                    new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false },
                     new TodoItem { Id = 2, Name = "Do the Dishes", IsComplete = false }
-                };
+                }));
+            mockService.Setup(p => p.GetTodoItem(1)).Returns(new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false });
 
-            context.AddRange(todos);
-            context.SaveChanges();
-
-            controller = new TodoController(context);
+            controller = new TodoController(mockService.Object);
         }
-
-        [TearDown]
-        public void TearDown()
-        {
-            context.RemoveRange(context.TodoItems);
-            context.SaveChanges();
-        }
-
 
         [Test]
         public void ShouldReturnAllTodoItems()

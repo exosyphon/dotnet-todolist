@@ -21,5 +21,9 @@ namespace DotNetReact.Models
         {
             return HashCode.Combine(Id, Name, IsComplete);
         }
+
+        public override string ToString() {
+            return $"{Id}:{Name}:{IsComplete}";
+        }
     }
 }
