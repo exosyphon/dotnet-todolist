@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 
 using DotNetReact.Models;
+using DotNetReact.Services;
 
 namespace DotNetReact
 {
@@ -41,6 +42,7 @@ namespace DotNetReact
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
             );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<ITodoItemService, TodoItemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
