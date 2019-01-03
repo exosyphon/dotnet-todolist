@@ -43,7 +43,7 @@ namespace DotNetReact.Tests.Controllers
         [Test]
         public void ShouldReturnSpecificTodoItem()
         {
-            Assert.AreEqual(new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false }, controller.GetById(1L).Value);
+            Assert.That(new TodoItem { Id = 1, Name = "Mow the Lawn", IsComplete = false }, Is.EqualTo(controller.GetById(1L).Value));
         }
     }
 }

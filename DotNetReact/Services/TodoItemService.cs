@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace DotNetReact.Services
 {
-
     public interface ITodoItemService
     {
         List<TodoItem> GetTodoItems();
@@ -15,7 +14,7 @@ namespace DotNetReact.Services
 
     public class TodoItemService : ITodoItemService
     {
-        private TodoContext _context;
+        private readonly TodoContext _context;
 
         public TodoItemService(TodoContext todoContext)
         {

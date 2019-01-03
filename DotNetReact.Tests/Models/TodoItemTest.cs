@@ -1,14 +1,19 @@
 using NUnit.Framework;
+using DotNetReact.Models;
 
 namespace DotNetReact.Tests.Models
 {
     [TestFixture]
     public class TodoItemTest
     {
-        [Test]
-        public void ShouldDoThings()
+        [TestFixture]
+        public class ToStringTests
         {
-            Assert.AreEqual(true, true);
+            [Test]
+            public void ShouldReturnIdNameIsComplete()
+            {
+                Assert.That(new TodoItem { Id = 1, Name = "Do Dishes", IsComplete = false }.ToString(), Is.EqualTo("1:Do Dishes:False"));
+            }
         }
     }
 }
